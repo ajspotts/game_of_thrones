@@ -12,7 +12,10 @@ class CharactersController < ApplicationController
   end
 
   def create
-    @character = Character.create!(character_params)
+    @house = House.find_by(name: params[:character][:house_id])
+    @character = Character.new(character_params)
+    @character.house = @house
+    @character.save
 
     redirect_to character_path(@character)
   end
@@ -21,8 +24,22 @@ class CharactersController < ApplicationController
     @character = Character.find(params[:id])
   end
 
+  def update
+    @character = Character.find(params[:id])
+    @character.update(character_params)
+
+    redirect_to character_path(@character)
+  end
+
+  def destroy
+    @character = Character.find(params[:id])
+    @character.destroy
+
+    redirect_to characters_path
+  end
+
   private
   def character_params
-    params.require(:character)
+    params.require(:character).permit(:name, :house, :img_url)
   end
 end
