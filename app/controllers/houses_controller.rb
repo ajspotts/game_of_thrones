@@ -8,6 +8,9 @@ class HousesController < ApplicationController
   end
 
   def new
+    @house = House.create!(house_params)
+
+    redirect_to house_path(@house)
   end
 
   def edit
